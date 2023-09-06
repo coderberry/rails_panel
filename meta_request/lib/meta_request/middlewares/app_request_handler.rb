@@ -26,7 +26,8 @@ module MetaRequest
               wrapper = if ActionDispatch::ExceptionWrapper.method_defined? :env
                           ActionDispatch::ExceptionWrapper.new(env, e)
                         else
-                          ActionDispatch::ExceptionWrapper.new(env['action_dispatch.backtrace_cleaner'], e)
+                          ActionDispatch::ExceptionWrapper.new(env['action_dispatch.backtrace_cleaner'],
+                                                               e)
                         end
               app_request.events.push(*Event.events_for_exception(wrapper))
             else
