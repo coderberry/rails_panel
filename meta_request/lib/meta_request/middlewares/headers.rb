@@ -11,11 +11,18 @@ module MetaRequest
       end
 
       def call(env)
-        request_path = env['PATH_INFO']
-        middleware = Rack::ResponseHeaders.new(@app) do |headers|
-          headers['X-Meta-Request-Version'] = MetaRequest::VERSION unless skip?(request_path)
+        req = Rack::Request.new(env)
+
+        # Only handle requests if the query param is set
+        if req.params["rails_panel"] != "true" || env["ENABLE_RAILS_PANEL"].to_s == "true"
+          @app.call(env)
+        else
+          request_path = env['PATH_INFO']
+          middleware = Rack::ResponseHeaders.new(@app) do |headers|
+            headers['X-Meta-Request-Version'] = MetaRequest::VERSION unless skip?(request_path)
+          end
+          middleware.call(env)
         end
-        middleware.call(env)
       end
 
       private

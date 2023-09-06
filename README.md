@@ -15,6 +15,15 @@ group :development do
 end
 ```
 
+In addition, to enable the `meta_request`, you must either set an environment variable `ENABLE_RAILS_PANEL=true` or add the query param `rails_panel=true`. Without either of these being set, the Rails Panel extension will not receive any data. This setting is made available to allow developers to skip loading the gem's Middlewares due to the slowness of the response.
+
+Example:
+
+```shell
+export ENABLE_RAILS_PANEL=true
+```
+or append to your request `?rails_panel=true`
+
 After this, install RailsPanel extension for [Chrome](https://chrome.google.com/webstore/detail/railspanel/gjpfobpafnhjhbajcjgccbbdofdckggg) or [Firefox](https://addons.mozilla.org/en-US/firefox/addon/rails-panel). This is recommended way of installing the extension, since it will auto-update on every new version.
 
 ## Install unpacked version

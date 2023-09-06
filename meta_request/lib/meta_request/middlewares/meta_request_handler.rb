@@ -8,11 +8,19 @@ module MetaRequest
       end
 
       def call(env)
-        request_id = env['PATH_INFO'][%r{/__meta_request/(.+)\.json$}, 1]
-        if request_id
-          events_json(request_id)
-        else
+        req = Rack::Request.new(env)
+
+        # Only handle requests if the query param is set
+        if req.params["rails_panel"] != "true" || env["ENABLE_RAILS_PANEL"].to_s == "true"
           @app.call(env)
+        else
+          # original code below
+          request_id = env['PATH_INFO'][%r{/__meta_request/(.+)\.json$}, 1]
+          if request_id
+            events_json(request_id)
+          else
+            @app.call(env)
+          end
         end
       end
 
